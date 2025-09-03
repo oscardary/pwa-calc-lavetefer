@@ -1,0 +1,5 @@
+NOTAS
+
+Borrar SW y caché del sitio:
+- DevTools → Application → Service Workers → Unregister.
+- DevTools → Application → Storage → Clear site data.

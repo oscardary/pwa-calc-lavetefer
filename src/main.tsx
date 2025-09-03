@@ -1,21 +1,16 @@
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes";
+import { AuthProvider } from "@/lib/auth/useAuth";
+import "./styles/tailwind.css";
 
-import React from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import AppRoutes from './routes'
-import './styles/tailwind.css'
-
-// Register SW
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-  })
-}
-
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AppRoutes />
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
-)
+);
