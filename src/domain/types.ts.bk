@@ -1,5 +1,6 @@
 
 export interface iMedicamento {
+  usuarioId: string
   nombre: string
   presentacion: string
   concentracionValor: string
@@ -7,7 +8,7 @@ export interface iMedicamento {
   posologiaValor: string
   posologiaUnidad: string
   comentario: string
-  activo: boolean
 }
-export interface iMedicamentoId extends iMedicamento { id?: number }
-export interface iLista { id?: number; nombre: string; itemsCount?: number }
+export interface iMedicamentoId extends iMedicamento { id?: string }
+
+export interface iLista { id?: string; nombre: string; itemsCount?: number }

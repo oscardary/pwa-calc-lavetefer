@@ -1,10 +1,12 @@
-
+// src/components/TopBar.tsx
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from "@/lib/auth/useAuth";
+import { useUser } from "../context/UserContext";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 export default function TopBar() {
-  const { user } = useAuth();
+  //const { user } = useAuth();
+  const { user } = useUser();
   const navigate = useNavigate();
   const { signOut } = useAuth();
 
@@ -20,7 +22,7 @@ export default function TopBar() {
     <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
       <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="font-semibold">Lavetefer Calc</Link>
+        <Link to="/" className="font-semibold">Lavetefer</Link>
 
         {/* Menú de usuario */}
         <DropdownMenu.Root>
@@ -28,7 +30,7 @@ export default function TopBar() {
             <button className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 transition">
               {user ? (
                 <span className="text-sm font-medium text-gray-700">
-                  👋 Hola, <strong>{user.email}</strong>
+                  👋 Hola, <strong>{user.nick}</strong>
                 </span>
               ) : (
                 <span className="text-sm text-gray-600">Menú</span>
@@ -43,7 +45,6 @@ export default function TopBar() {
             {user ? (
               <>
                 
-
                 {/* Opciones del usuario */}
                 <DropdownMenu.Item asChild>
                   <Link
@@ -51,6 +52,33 @@ export default function TopBar() {
                     className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
                   >
                     Inicio
+                  </Link>
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Item asChild>
+                  <Link
+                    to="/"
+                    className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
+                  >
+                    Lista nueva
+                  </Link>
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Item asChild>
+                  <Link
+                    to="/medicamentos/new"
+                    className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
+                  >
+                    Nuevo medicamento
+                  </Link>
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Item asChild>
+                  <Link
+                    to="/mis-medicamentos"
+                    className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
+                  >
+                    Mis medicamentos
                   </Link>
                 </DropdownMenu.Item>
 

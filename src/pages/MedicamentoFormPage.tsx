@@ -1,4 +1,4 @@
-
+// src/pages/MedicamentoFormPage.tsx
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import TopBar from '@/components/TopBar'
@@ -11,16 +11,16 @@ export default function MedicamentoFormPage() {
   const nav = useNavigate()
   const { getMed, saveMed } = useMedicamentos(listaId!)
   const [med, setMed] = useState<iMedicamentoId>({
-    id: undefined,
+    id: '', usuarioId: '',
     nombre: '', presentacion: '',
     concentracionValor: '', concentracionUnidad: 'mg/ml',
     posologiaValor: '', posologiaUnidad: 'mg/kg',
-    comentario: '', activo: true,
+    comentario: '', 
   })
 
   useEffect(()=>{
     if (medId && medId !== 'new') {
-      getMed(Number(medId)).then(m => m && setMed(m))
+      getMed(medId).then(m => m && setMed(m))
     }
   }, [medId])
 
@@ -45,12 +45,8 @@ export default function MedicamentoFormPage() {
             </select>
           </div>
           <textarea className="border rounded-xl px-3 py-2" placeholder="Comentario" value={med.comentario} onChange={e=>setMed({...med, comentario:e.target.value})} />
-          <label className="inline-flex items-center gap-2">
-            <input type="checkbox" checked={med.activo} onChange={e=>setMed({...med, activo:e.target.checked})} />
-            Favorito
-          </label>
           <div className="flex gap-2">
-            <button className="rounded-xl bg-green-600 text-white px-3 py-2">Guardar</button>
+            <button type="submit" className="rounded-xl bg-green-600 text-white px-3 py-2">Guardar</button>
             <button type="button" className="rounded-xl border px-3 py-2" onClick={()=>nav(-1)}>Cancelar</button>
           </div>
         </form>

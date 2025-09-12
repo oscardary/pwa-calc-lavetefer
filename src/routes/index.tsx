@@ -4,6 +4,8 @@ import RegisterPage from "@/pages/RegisterPage";
 import Dashboard from "@/pages/DashboardPage";
 import AuthCallback from "@/pages/AuthCallback";
 import DebugAuth from "@/pages/DebugAuth";
+import MedicamentoForm from "@/pages/MedicamentoFormPage";
+import MedicamentosPage from "@/pages/MedicamentosPage";
 import PrivateRoute from "@/components/PrivateRoute";
 
 export default function AppRoutes() {
@@ -15,6 +17,8 @@ export default function AppRoutes() {
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/debug-auth" element={<DebugAuth />} />
       <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+      <Route path="/medicamentos/:medId" element={<PrivateRoute><MedicamentoForm /></PrivateRoute>} />
+      <Route path="/mis-medicamentos" element={<PrivateRoute><MedicamentosPage /></PrivateRoute>} />
       {/* ...otras rutas */}
     </Routes>
   );
