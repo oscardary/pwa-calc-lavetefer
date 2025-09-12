@@ -57,10 +57,10 @@ export default function TopBar() {
 
                 <DropdownMenu.Item asChild>
                   <Link
-                    to="/"
+                    to="/mis-listas"
                     className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
                   >
-                    Lista nueva
+                    Mis listas
                   </Link>
                 </DropdownMenu.Item>
 

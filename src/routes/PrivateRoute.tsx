@@ -3,7 +3,9 @@ import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
 import Dashboard from "@/pages/DashboardPage";
 import MedicamentoFormPage from "@/pages/MedicamentoFormPage";
-import MedicamentosPage from "@/pages/MedicamentosPage";
+import MedicamentoPage from "@/pages/MedicamentoPage";
+import ListaPage from "@/pages/ListaPage";
+import ListaFormPage from "@/pages/ListaFormPage";
 import PrivateRoute from "../components/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -35,7 +37,31 @@ const router = createBrowserRouter([
     path: "/mis-medicamentos",
     element: (
       <PrivateRoute>
-        <MedicamentosPage />
+        <MedicamentoPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/listas",
+    element: (
+      <PrivateRoute>
+        <ListaFormPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/listas/:listId",
+    element: (
+      <PrivateRoute>
+        <ListaFormPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/mis-listas",
+    element: (
+      <PrivateRoute>
+        <ListaPage />
       </PrivateRoute>
     ),
   },

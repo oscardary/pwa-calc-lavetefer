@@ -1,9 +1,8 @@
 // src/repositories/local/MedicamentosLocalRepo.ts
-import { useAuth } from '@/lib/auth/useAuth';
 import type { iMedicamento, iMedicamentoId } from '@/domain/types'
 import { getDB, generateId, STORE_MEDICAMENTOS, STORE_LISTA_MEDICAMENTO } from '@/lib/db/indexeddb'
 
-export interface MedicamentosRepo {
+export interface iMedicamentosRepo {
   obtenerTodos(usuarioId: string): Promise<iMedicamentoId[]>
   obtenerPorId(id: string): Promise<iMedicamentoId | null>
   obtenerPorLista(listaId: string): Promise<iMedicamentoId[]>
@@ -14,10 +13,10 @@ export interface MedicamentosRepo {
   desasociarDeLista(listaId: string, medicamentoId: string): Promise<void>
 }
 
-export function createMedicamentosLocalRepo(): MedicamentosRepo {
+export function medicamentosLocalRepo(): iMedicamentosRepo {
   return {
     async obtenerTodos(usuarioId) {
-      if (!usuarioId) return [] // no hay lista válida -> no buscamos
+      if (!usuarioId) return [] // no hay usuario válido -> no buscamos
       
       const db = await getDB()
       const idx = db.transaction(STORE_MEDICAMENTOS).store.index('usuarioId_idx')

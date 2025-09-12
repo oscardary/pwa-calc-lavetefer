@@ -1,10 +1,9 @@
-
+// src/lib/db/indexeddb.ts
 import { openDB, IDBPDatabase } from 'idb'
 import { v4 as uuidv4 } from "uuid"
 
-
 export const DB_NAME = 'lavetefer-db'
-export const DB_VERSION = 2
+export const DB_VERSION = 3
 export const STORE_USUARIOS = 'usuarios'
 export const STORE_LISTAS = 'listas'
 export const STORE_MEDICAMENTOS = 'medicamentos'

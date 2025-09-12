@@ -1,10 +1,9 @@
 // src/pages/MedicamentosPage.tsx
 import { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
-import { useNavigate } from "react-router-dom";
-import { createMedicamentosLocalRepo } from "../repositories/local/MedicamentosLocalRepo";
+import { medicamentosLocalRepo } from "../repositories/local/MedicamentosLocalRepo";
 import { iMedicamentoId } from "../domain/types/index";
-import { Heart, HeartOff, Edit, Plus } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import TopBar from "@/components/TopBar";
 
@@ -13,19 +12,16 @@ export default function MedicamentosPage() {
   const { user } = useUser();
   const [medicamentos, setMedicamentos] = useState<iMedicamentoId[]>([]);
   const [loading, setLoading] = useState(true);
-  const nav = useNavigate();
 
   useEffect(() => {
     const fetchMedicamentos = async () => {
       if (!user) return; // Si no hay usuario, no hacer nada
-
       setLoading(true);
-      const repo = createMedicamentosLocalRepo(); // <-- crear instancia del repo
+      const repo = medicamentosLocalRepo(); // <-- crear instancia del repo
       const meds = await repo.obtenerTodos(user.id); // <-- usar el método del repo
       setMedicamentos(meds);
       setLoading(false);
     };
-
     fetchMedicamentos();
   }, [user]);
 

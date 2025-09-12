@@ -1,16 +1,31 @@
-
+// src/hooks/useLists.ts
 import { useEffect, useState } from 'react'
-import type { iLista } from '@/domain/types'
-import { createListasLocalRepo } from '@/repositories/local/ListasLocalRepo'
+import { useUser } from '@/context/UserContext'
+import type { iListaId, iLista } from '@/domain/types'
+import { listasLocalRepo } from '@/repositories/local/ListasLocalRepo'
 
-const repo = createListasLocalRepo()
+const repo = listasLocalRepo()
 
 export function useLists() {
-  const [listas, setListas] = useState<iLista[]>([])
-  useEffect(() => { repo.obtenerTodas().then(setListas) }, [])
-  async function createLista(nombre: string) {
-    await repo.crear(nombre)
-    setListas(await repo.obtenerTodas())
+  const { user } = useUser()
+  const usuarioId = user?.id ?? ""
+  const [listas, setListas] = useState<iListaId[]>([])
+
+  async function reload() {
+    setListas(await repo.obtenerTodas(usuarioId))
   }
-  return { listas, createLista }
+
+  useEffect(() => { reload() }, [usuarioId] )
+  
+  async function saveList(list: iListaId) {
+    if (list.id) {
+      await repo.actualizar(list)
+    } else {
+      const { id, ...newList } = list
+      await repo.insertar(usuarioId, newList as iLista)
+    }
+    await reload()
+  }
+
+  return { listas, reload, saveList }
 }

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useUser } from '@/context/UserContext'
 import type { iMedicamentoId, iMedicamento } from '@/domain/types'
-import { createMedicamentosLocalRepo } from '@/repositories/local/MedicamentosLocalRepo'
+import { medicamentosLocalRepo } from '@/repositories/local/MedicamentosLocalRepo'
 
 /**
  * Hook para manejar medicamentos de un usuario específico
@@ -11,7 +11,7 @@ import { createMedicamentosLocalRepo } from '@/repositories/local/MedicamentosLo
 export function useMedicamentos(listaId?: string) {
   const { user } = useUser()
   const usuarioId = user?.id ?? ""
-  const repo = createMedicamentosLocalRepo()
+  const repo = medicamentosLocalRepo()
   const [meds, setMeds] = useState<iMedicamentoId[]>([])
 
   async function reload() {
