@@ -50,7 +50,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/listas/:listId",
+    path: "/listas/:listaId",
     element: (
       <PrivateRoute>
         <ListaFormPage />

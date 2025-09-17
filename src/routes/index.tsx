@@ -22,7 +22,7 @@ export default function AppRoutes() {
       <Route path="/medicamentos/:medId" element={<PrivateRoute><MedicamentoFormPage /></PrivateRoute>} />
       <Route path="/mis-medicamentos" element={<PrivateRoute><MedicamentoPage /></PrivateRoute>} />
       <Route path="/mis-listas" element={<PrivateRoute><ListaPage /></PrivateRoute>} />
-      <Route path="/listas/:listId" element={<PrivateRoute><ListaFormPage /></PrivateRoute>} />
+      <Route path="/listas/:listaId" element={<PrivateRoute><ListaFormPage /></PrivateRoute>} />
     </Routes>
   );
 }
