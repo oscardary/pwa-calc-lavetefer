@@ -22,7 +22,7 @@ export default function TopBar() {
     <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
       <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="font-semibold">Lavetefer</Link>
+        Lavetefer
 
         {/* Menú de usuario */}
         <DropdownMenu.Root>
@@ -61,15 +61,6 @@ export default function TopBar() {
                     className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
                   >
                     Mis listas
-                  </Link>
-                </DropdownMenu.Item>
-
-                <DropdownMenu.Item asChild>
-                  <Link
-                    to="/medicamentos/new"
-                    className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
-                  >
-                    Nuevo medicamento
                   </Link>
                 </DropdownMenu.Item>
 

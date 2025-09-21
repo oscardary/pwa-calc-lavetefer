@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import ListaNuevaModal from "@/components/ListaNuevaModal";
 import TopBar from "@/components/TopBar";
 import { useLists } from "@/hooks/useLists";
+import BottomNav from "@/components/BottomNav";
+import { Edit, Plus } from "lucide-react";
 
 export default function ListaPage() {
   const { user } = useUser();
@@ -34,8 +36,8 @@ export default function ListaPage() {
   return (
     <div>
       <TopBar />
-      <div className="p-4 relative">
-        <h1 className="text-2xl font-bold mb-4">Mis Listas</h1>
+      <div className="max-w-2xl mx-auto p-6">
+        <h1 className="text-xl font-bold text-center mb-6">Mis Listas</h1>
 
         <div className="grid gap-4">
           {listas.map((lista) => (
@@ -49,9 +51,8 @@ export default function ListaPage() {
               </div>
               <button
                 onClick={() => navigate(`/listas/${lista.id}`)}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                ✏️
+                className="text-blue-600 hover:text-blue-800">
+                <Edit size={18} />
               </button>
             </div>
           ))}
@@ -60,9 +61,8 @@ export default function ListaPage() {
         {/* Botón flotante */}
         <button
           onClick={() => setShowModal(true)}
-          className="fixed bottom-6 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-700"
-        >
-          ➕
+          className="fixed bottom-20 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-700">
+            <Plus className="w-7 h-7" />
         </button>
 
         {/* Modal */}
@@ -72,6 +72,7 @@ export default function ListaPage() {
           onCreate={handleCreate}
         />
       </div>
+      <BottomNav />
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     // Si ya hay usuario, saltar al dashboard
-    if (!loading && user) navigate("/dashboard");
+    if (!loading && user) navigate("/calculadora");
   }, [user, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {

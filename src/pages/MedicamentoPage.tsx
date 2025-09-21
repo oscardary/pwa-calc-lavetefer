@@ -6,6 +6,7 @@ import { iMedicamentoId } from "../domain/types/index";
 import { Edit, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import TopBar from "@/components/TopBar";
+import BottomNav from "@/components/BottomNav";
 
 
 export default function MedicamentosPage() {
@@ -46,8 +47,8 @@ export default function MedicamentosPage() {
   return (
     <div>
       <TopBar />
-      <div className="p-4">
-        <h1 className="text-xl font-bold mb-4">Medicamentos</h1>
+      <div className="max-w-2xl mx-auto p-6">
+        <h1 className="text-xl font-bold text-center mb-6">Medicamentos</h1>
 
         <div className="space-y-3">
           {medicamentos.map((med) => (
@@ -76,9 +77,8 @@ export default function MedicamentosPage() {
                 {/* Botón de editar */}
                 <Link
                   to={`/medicamentos/${med.id}`}
-                  className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-                >
-                  <Edit size={18} />
+                  className="text-blue-600 hover:text-blue-800">
+                <Edit size={18} />
                 </Link>
               </div>
             </div>
@@ -88,11 +88,11 @@ export default function MedicamentosPage() {
         {/* Botón flotante para añadir */}
         <Link
           to="/medicamentos/new"
-          className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-green-600 text-white text-3xl flex items-center justify-center shadow-lg hover:bg-green-700 transition"
-        >
-          <Plus size={28} />
+          className="fixed bottom-20 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-700">
+            <Plus className="w-7 h-7" />
         </Link>
       </div>
+      <BottomNav />
     </div>
   );
 }

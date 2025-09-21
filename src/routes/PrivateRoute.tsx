@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
-import Dashboard from "@/pages/DashboardPage";
+//import Dashboard from "@/pages/DashboardPage";
 import MedicamentoFormPage from "@/pages/MedicamentoFormPage";
 import MedicamentoPage from "@/pages/MedicamentoPage";
 import ListaPage from "@/pages/ListaPage";
 import ListaFormPage from "@/pages/ListaFormPage";
+import CalculadoraPage from "@/pages/CalculadoraPage";
 import PrivateRoute from "../components/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -70,10 +71,10 @@ const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
-    path: "/dashboard",
+    path: "/calculadora",
     element: (
       <PrivateRoute>
-        <Dashboard />
+        <CalculadoraPage />
       </PrivateRoute>
     ),
   },

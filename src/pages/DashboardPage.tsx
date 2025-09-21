@@ -1,11 +1,11 @@
-
-import React from 'react'
+// src/pages/DashboardPage.tsx
+//import React from 'react'
 import TopBar from '@/components/TopBar'
-import { useLists } from '@/hooks/useLists'
-import { Link } from 'react-router-dom'
+//import { useLists } from '@/hooks/useLists'
+//import { Link } from 'react-router-dom'
 
 export default function DashboardPage() {
-  const { listas, createLista } = useLists()
+  //const { listas, createLista } = useLists()
   return (
     <div>
       <TopBar />
