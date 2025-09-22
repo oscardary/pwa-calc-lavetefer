@@ -36,10 +36,10 @@ export default function ListaPage() {
   return (
     <div>
       <TopBar />
-      <div className="max-w-2xl mx-auto p-6">
-        <h1 className="text-xl font-bold text-center mb-6">Mis Listas</h1>
+      <div className="max-w-2xl mx-auto p-2">
+        <h1 className="text-xl font-bold text-center mb-4">Mis Listas</h1>
 
-        <div className="grid gap-4">
+        <div className="grid gap-1">
           {listas.map((lista) => (
             <div
               key={lista.id}

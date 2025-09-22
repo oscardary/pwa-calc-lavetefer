@@ -15,7 +15,6 @@ import BottomNav from "@/components/BottomNav";
 import InputPeso from "@/components/InputPeso";
 import { SeleccionListaModal } from "@/components/SeleccionListaModal";
 
-
 export default function CalculadoraPage() {
   const { user } = useUser();
   const [peso, setPeso] = useState<string>("");
@@ -66,32 +65,33 @@ export default function CalculadoraPage() {
     <div>
       <TopBar />
       <div className="max-w-2xl mx-auto p-6">
-        <h1 className="text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
-          Calculando lista {selectedLista ? selectedLista.nombre : "(elige lista)"}
+        <h1 className="text-xl font-bold text-center mb-4 flex items-center justify-center gap-2">
+          Calculando lista{" "}
+          {selectedLista ? selectedLista.nombre : "(elige lista)"}
           <button onClick={() => setShowModal(true)}>
             <ListCheck className="w-5 h-5 text-blue-600 hover:text-blue-800" />
           </button>
         </h1>
 
         {/* Input peso animal */}
-        <div className="relative mb-6">
+        <div className="relative mb-2">
           <InputPeso value={peso} onChange={setPeso} />
         </div>
 
         {/* Lista medicamentos */}
-        <div className="space-y-3">
+        <div className="max-w-2xl mx-auto p-2">
           {medicamentos.map((med, index) => (
             <div
               key={med.id}
               className={`flex justify-between items-center p-4 rounded-lg shadow-sm ${
-                index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                index % 2 === 0 ? "bg-white" : "bg-gray-80"
               }`}
             >
               <div>
                 <p className="font-semibold">{med.nombre}</p>
                 <p className="text-sm text-gray-600">
-                  Pos: {med.posologiaValor} {med.posologiaUnidad} | 
-                  Con: {med.concentracionValor} {med.concentracionUnidad}
+                  Pos: {med.posologiaValor} {med.posologiaUnidad} | Con:{" "}
+                  {med.concentracionValor} {med.concentracionUnidad}
                 </p>
               </div>
               <div className="text-right">
@@ -111,7 +111,7 @@ export default function CalculadoraPage() {
           onSelect={async (lista) => {
             setSelectedLista(lista);
             setShowModal(false);
-        
+
             const meds = await loadMedicamentosPorLista(lista.id);
             setMedicamentos(meds);
           }}

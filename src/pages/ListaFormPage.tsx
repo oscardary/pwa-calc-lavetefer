@@ -1,28 +1,29 @@
 // src/pages/ListaFormPage.tsx
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import TopBar from "@/components/TopBar";
+import ActionButtons from "@/components/ActionButtons";
 import { listasLocalRepo } from "@/repositories/local/ListasLocalRepo";
 import { medicamentosLocalRepo } from "@/repositories/local/MedicamentosLocalRepo";
-import { listaMedicamentoLocalRepo } from "@/repositories/local/ListaMedicamentoLocalRepo"
+import { listaMedicamentoLocalRepo } from "@/repositories/local/ListaMedicamentoLocalRepo";
 import type { iListaId, iMedicamentoId } from "@/domain/types";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 
 export default function ListaFormPage() {
+  const nav = useNavigate();
   const { user } = useUser();
   const { listaId } = useParams<{ listaId: string }>();
   const [lista, setLista] = useState<iListaId | null>(null);
   const [medicamentos, setMedicamentos] = useState<iMedicamentoId[]>([]);
   const [seleccionados, setSeleccionados] = useState<Set<string>>(new Set());
-  const repoListaMedicamento = listaMedicamentoLocalRepo()
+  const repoListaMedicamento = listaMedicamentoLocalRepo();
 
   const [filtro, setFiltro] = useState("");
 
-  // 🔹 Cargar lista y medicamentos del usuario
+  // Cargar lista y medicamentos del usuario
   useEffect(() => {
     async function loadData() {
       if (!user) return; // Si no hay usuario, no hacer nada
@@ -41,14 +42,14 @@ export default function ListaFormPage() {
       setMedicamentos(medsUsuario);
 
       // 3. Obtener medicamentos ya seleccionados en esta lista
-      const relaciones = await repoListaMedicamento.obtenerPorLista(listaId)
-      const medsEnLista = relaciones.map((rel) => rel.medicamentoId)
-      setSeleccionados(new Set(medsEnLista))
+      const relaciones = await repoListaMedicamento.obtenerPorLista(listaId);
+      const medsEnLista = relaciones.map((rel) => rel.medicamentoId);
+      setSeleccionados(new Set(medsEnLista));
     }
     loadData();
   }, [listaId, user]);
 
-  // 🔹 Manejo de selección
+  // Manejo de selección
   function toggleSeleccion(id: string) {
     setSeleccionados((prev) => {
       const nuevo = new Set(prev);
@@ -61,27 +62,31 @@ export default function ListaFormPage() {
     });
   }
 
-  // 🔹 Guardar cambios en IndexedDB
+  // Guardar cambios en IndexedDB
   async function handleGuardar() {
-    if (!listaId) return
+    if (!listaId) return;
 
-    console.log("Medicamentos seleccionados para lista:", Array.from(seleccionados))
+    console.log(
+      "Medicamentos seleccionados para lista:",
+      Array.from(seleccionados)
+    );
 
     // 1. Borramos todos los registros actuales de esa lista
-    const actuales = await repoListaMedicamento.obtenerPorLista(listaId)
+    const actuales = await repoListaMedicamento.obtenerPorLista(listaId);
     for (const lm of actuales) {
-      await repoListaMedicamento.eliminar(lm.listaId, lm.medicamentoId)
+      await repoListaMedicamento.eliminar(lm.listaId, lm.medicamentoId);
     }
 
     // 2. Insertamos los seleccionados
     for (const medId of seleccionados) {
-      await repoListaMedicamento.insertar(listaId, medId)
+      await repoListaMedicamento.insertar(listaId, medId);
     }
 
-    alert("Cambios guardados en IndexedDB ✅")
+    //alert("Cambios guardados en IndexedDB ✅");
+    nav(-1);
   }
 
-  // 🔹 Filtro simple
+  // Filtro simple
   const medicamentosFiltrados = medicamentos.filter((m) =>
     m.nombre.toLowerCase().includes(filtro.toLowerCase())
   );
@@ -89,19 +94,21 @@ export default function ListaFormPage() {
   return (
     <div>
       <TopBar />
-      <div className="p-4 space-y-4">
+      <div className="max-w-2xl mx-auto p-4 pb-24">
         {/* Título */}
         <h1 className="text-xl font-bold">
-          {lista?.nombre || "Lista sin nombre"}
+          Medicamentos para lista {lista?.nombre || "Lista sin nombre"}
         </h1>
         <p className="text-gray-500">{lista?.descripcion}</p>
 
         {/* Barra de búsqueda */}
-        <Input
-          placeholder="Buscar medicamento..."
-          value={filtro}
-          onChange={(e) => setFiltro(e.target.value)}
-        />
+        <div className="relative mb-4">
+          <Input
+            placeholder="Buscar medicamento..."
+            value={filtro}
+            onChange={(e) => setFiltro(e.target.value)}
+          />
+        </div>
 
         {/* Lista de medicamentos */}
         <div className="space-y-2">
@@ -126,9 +133,7 @@ export default function ListaFormPage() {
         </div>
 
         {/* Botón guardar */}
-        <Button onClick={handleGuardar} className="w-full">
-          Guardar cambios
-        </Button>
+        <ActionButtons onSave={handleGuardar}/>
       </div>
     </div>
   );
