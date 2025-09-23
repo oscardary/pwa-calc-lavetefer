@@ -1,7 +1,7 @@
 // src/pages/ListaPage.tsx
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
-import { iLista } from "@/domain/types/index";
+import { iListaId } from "@/domain/types/index";
 import { useNavigate } from "react-router-dom";
 import ListaNuevaModal from "@/components/ListaNuevaModal";
 import TopBar from "@/components/TopBar";
@@ -25,10 +25,9 @@ export default function ListaPage() {
     );
   }
 
-  // 👇 esta es tu función handleCreate
-  const handleCreate = async (nombre: string, descripcion: string) => {
-    const nuevaLista: iLista = { nombre, descripcion };
-    await saveList(nuevaLista as any); // saveList se encarga de insertar
+  // esta es tu función handleCreate
+  const handleCreate = async (lista: iListaId) => {
+    await saveList(lista); // saveList se encarga de insertar
     setShowModal(false);
     await reload(); // refresca listas
   };
@@ -69,7 +68,7 @@ export default function ListaPage() {
         <ListaNuevaModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}
-          onCreate={handleCreate}
+          onSave={handleCreate}
         />
       </div>
       <BottomNav />

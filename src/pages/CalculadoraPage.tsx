@@ -1,8 +1,6 @@
 // src/pages/CalculadoraPage.tsx
 import { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
-import { Input } from "@/components/ui/input";
-//import { Button } from "@/components/ui/button";
 import { ListCheck } from "lucide-react";
 import { medicamentosLocalRepo } from "../repositories/local/MedicamentosLocalRepo";
 import { listasLocalRepo } from "../repositories/local/ListasLocalRepo";
@@ -14,6 +12,7 @@ import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
 import InputPeso from "@/components/InputPeso";
 import { SeleccionListaModal } from "@/components/SeleccionListaModal";
+import { STORAGE_KEY } from "@/constants/storageKeys";
 
 export default function CalculadoraPage() {
   const { user } = useUser();
@@ -21,6 +20,7 @@ export default function CalculadoraPage() {
   const [medicamentos, setMedicamentos] = useState<iMedicamentoId[]>([]);
   const [listas, setListas] = useState<iListaId[]>([]);
   const [selectedLista, setSelectedLista] = useState<iListaId | null>(null);
+  const [selectedListaId, setSelectedListaId] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
 
   // Función para cargar medicamentos de una lista
@@ -41,7 +41,7 @@ export default function CalculadoraPage() {
     return meds;
   }
 
-  // Cargar listas del usuario
+  // Cargar listas del usuario y respetar selección persistida
   useEffect(() => {
     async function loadListas() {
       if (!user) return;
@@ -50,16 +50,22 @@ export default function CalculadoraPage() {
       const listas = await repo.obtenerTodas(user.id);
       setListas(listas);
 
-      if (listas.length > 0 && !selectedLista) {
-        const primeraLista = listas[0];
-        setSelectedLista(primeraLista);
+      // Verificar si hay lista guardada en localStorage
+      const savedId = localStorage.getItem(STORAGE_KEY.LISTA_SELECCIONADA);
 
-        const meds = await loadMedicamentosPorLista(primeraLista.id);
-        setMedicamentos(meds);
+      if (savedId) {
+        const listaGuardada = listas.find((list) => list.id === savedId);
+        if (listaGuardada) {
+          setSelectedLista(listaGuardada);
+          setSelectedListaId(listaGuardada.id);
+
+          const meds = await loadMedicamentosPorLista(listaGuardada.id);
+          setMedicamentos(meds);
+        }
       }
     }
     loadListas();
-  }, [user, selectedLista]);
+  }, [user]);
 
   return (
     <div>
@@ -110,6 +116,8 @@ export default function CalculadoraPage() {
           onClose={() => setShowModal(false)}
           onSelect={async (lista) => {
             setSelectedLista(lista);
+            setSelectedListaId(lista.id);
+            localStorage.setItem(STORAGE_KEY.LISTA_SELECCIONADA, lista.id); // Persistir
             setShowModal(false);
 
             const meds = await loadMedicamentosPorLista(lista.id);

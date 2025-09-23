@@ -4,13 +4,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import TopBar from "@/components/TopBar";
 import ActionButtons from "@/components/ActionButtons";
+import type { iListaId, iMedicamentoId } from "@/domain/types";
 import { listasLocalRepo } from "@/repositories/local/ListasLocalRepo";
 import { medicamentosLocalRepo } from "@/repositories/local/MedicamentosLocalRepo";
 import { listaMedicamentoLocalRepo } from "@/repositories/local/ListaMedicamentoLocalRepo";
-import type { iListaId, iMedicamentoId } from "@/domain/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Edit } from "lucide-react";
+import ListaNuevaModal from "@/components/ListaNuevaModal";
 
 export default function ListaFormPage() {
   const nav = useNavigate();
@@ -20,6 +22,7 @@ export default function ListaFormPage() {
   const [medicamentos, setMedicamentos] = useState<iMedicamentoId[]>([]);
   const [seleccionados, setSeleccionados] = useState<Set<string>>(new Set());
   const repoListaMedicamento = listaMedicamentoLocalRepo();
+  const [showModal, setShowModal] = useState(false);
 
   const [filtro, setFiltro] = useState("");
 
@@ -97,7 +100,17 @@ export default function ListaFormPage() {
       <div className="max-w-2xl mx-auto p-4 pb-24">
         {/* Título */}
         <h1 className="text-xl font-bold">
-          Medicamentos para lista {lista?.nombre || "Lista sin nombre"}
+          <span>
+            Medicamentos de lista {lista?.nombre || "Lista sin nombre"}
+          </span>
+          {lista && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="p-1 rounded-full hover:bg-gray-100"
+            >
+              <Edit className="w-5 h-5 text-blue-600 hover:text-blue-800" />
+            </button>
+          )}
         </h1>
         <p className="text-gray-500">{lista?.descripcion}</p>
 
@@ -133,7 +146,25 @@ export default function ListaFormPage() {
         </div>
 
         {/* Botón guardar */}
-        <ActionButtons onSave={handleGuardar}/>
+        <ActionButtons onSave={handleGuardar} />
+
+        {/* Modal */}
+        {showModal && lista && (
+          <ListaNuevaModal
+            isOpen={showModal}
+            initialData={lista} // 👈 prellenar con nombre + descripcion
+            onClose={() => setShowModal(false)}
+            onSave={async (updatedLista) => {
+              // Aquí llamas a tu repo para actualizar
+              const repo = listasLocalRepo();
+              await repo.actualizar(updatedLista);
+
+              // Refrescar datos locales
+              setLista(updatedLista);
+              setShowModal(false);
+            }}
+          />
+        )}
       </div>
     </div>
   );
