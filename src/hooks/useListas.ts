@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react'
 import { useUser } from '@/context/UserContext'
 import type { iListaId, iLista } from '@/domain/types'
 import { listasLocalRepo } from '@/repositories/local/ListasLocalRepo'
+import { useMedicamentosListas } from "./useMedicamentosListas"
 
-const repo = listasLocalRepo()
 
 export function useLists() {
   const { user } = useUser()
   const usuarioId = user?.id ?? ""
+  const repo = listasLocalRepo();
+  const relaciones = useMedicamentosListas();
   const [listas, setListas] = useState<iListaId[]>([])
 
   async function reload() {
@@ -27,5 +29,12 @@ export function useLists() {
     await reload()
   }
 
-  return { listas, reload, saveList }
+  async function removeList(id: string) {
+    // eliminar relaciones primero
+    await relaciones.removeByLista(id)
+    await repo.eliminarPorId(id)
+    await reload()
+  }
+
+  return { listas, reload, saveList, removeList }
 }

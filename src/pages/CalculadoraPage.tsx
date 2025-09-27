@@ -20,7 +20,6 @@ export default function CalculadoraPage() {
   const [medicamentos, setMedicamentos] = useState<iMedicamentoId[]>([]);
   const [listas, setListas] = useState<iListaId[]>([]);
   const [selectedLista, setSelectedLista] = useState<iListaId | null>(null);
-  const [selectedListaId, setSelectedListaId] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
 
   // Función para cargar medicamentos de una lista
@@ -57,7 +56,6 @@ export default function CalculadoraPage() {
         const listaGuardada = listas.find((list) => list.id === savedId);
         if (listaGuardada) {
           setSelectedLista(listaGuardada);
-          setSelectedListaId(listaGuardada.id);
 
           const meds = await loadMedicamentosPorLista(listaGuardada.id);
           setMedicamentos(meds);
@@ -70,39 +68,49 @@ export default function CalculadoraPage() {
   return (
     <div>
       <TopBar />
-      <div className="max-w-2xl mx-auto p-6">
-        <h1 className="text-xl font-bold text-center mb-4 flex items-center justify-center gap-2">
-          Calculando lista{" "}
-          {selectedLista ? selectedLista.nombre : "(elige lista)"}
-          <button onClick={() => setShowModal(true)}>
-            <ListCheck className="w-5 h-5 text-blue-600 hover:text-blue-800" />
+      <div className="max-w-2xl mx-auto p-4 pb-20">
+        {/* Título */}
+        <div className="flex items-center justify-center mb-4 relative">
+          <h1 className="text-xl font-bold text-center">
+            Calculando lista{" "}
+            {selectedLista ? selectedLista.nombre : "(elige lista)"}
+          </h1>
+
+          <button
+            onClick={() => setShowModal(true)}
+            className="absolute right-0 p-2 rounded-full hover:bg-gray-100"
+          >
+            <ListCheck className="w-6 h-6 text-blue-600 hover:text-blue-800" />
           </button>
-        </h1>
+        </div>
 
         {/* Input peso animal */}
-        <div className="relative mb-2">
+        <div className="mb-4">
           <InputPeso value={peso} onChange={setPeso} />
         </div>
 
         {/* Lista medicamentos */}
-        <div className="max-w-2xl mx-auto p-2">
-          {medicamentos.map((med, index) => (
+        <div className="space-y-3">
+          {medicamentos.map((med) => (
             <div
               key={med.id}
-              className={`flex justify-between items-center p-4 rounded-lg shadow-sm ${
-                index % 2 === 0 ? "bg-white" : "bg-gray-80"
-              }`}
+              className="flex justify-between items-center p-4 rounded-xl shadow-sm bg-white"
             >
               <div>
                 <p className="font-semibold">{med.nombre}</p>
                 <p className="text-sm text-gray-600">
-                  Pos: {med.posologiaValor} {med.posologiaUnidad} | Con:{" "}
-                  {med.concentracionValor} {med.concentracionUnidad}
+                  Posología: {med.posologiaValor} {med.posologiaUnidad}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Concentración: {med.concentracionValor}{" "}
+                  {med.concentracionUnidad}
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-xs text-gray-500">Dosis</p>
-                <p className="font-bold">{calcularDosis(med, peso)}</p>
+                <p className="font-bold text-blue-700">
+                  {calcularDosis(med, peso)}
+                </p>
               </div>
             </div>
           ))}
@@ -116,7 +124,6 @@ export default function CalculadoraPage() {
           onClose={() => setShowModal(false)}
           onSelect={async (lista) => {
             setSelectedLista(lista);
-            setSelectedListaId(lista.id);
             localStorage.setItem(STORAGE_KEY.LISTA_SELECCIONADA, lista.id); // Persistir
             setShowModal(false);
 

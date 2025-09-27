@@ -47,49 +47,38 @@ export default function MedicamentosPage() {
   return (
     <div>
       <TopBar />
-      <div className="max-w-2xl mx-auto p-4">
-        <h1 className="text-xl font-bold text-center mb-4">Mis Medicamentos</h1>
+      <div className="max-w-2xl mx-auto p-2 pb-20">
+        <h1 className="relative text-xl font-bold text-center mb-4">
+          Mis Medicamentos
+        </h1>
 
-        <div className="max-w-2xl mx-auto p-2">
+        <div className="max-w-2xl mx-auto p-2 space-y-3">
           {medicamentos.map((med) => (
-            <div
+            <Link
               key={med.id}
-              className="flex items-center justify-between bg-white rounded-lg shadow p-4 border"
+              to={`/medicamentos/${med.id}`}
+              className="block bg-white rounded-lg shadow p-4 border hover:bg-gray-50 transition"
             >
-              <div>
-                <h2 className="font-semibold text-gray-800">
-                  {med.nombre} {med.presentacion}
-                </h2>
-                <p className="text-sm text-gray-500">
-                  {med.posologiaValor} {med.posologiaUnidad} ·{" "}
-                  {med.concentracionValor} {med.concentracionUnidad}
-                </p>
-              </div>
-
-              <div className="flex items-center space-x-3">
-                {/* Icono favorito (puedes conectar al estado luego) */}
-                {/*med.id ? (
-                  <Heart className="text-green-500" size={24} />
-                ) : (
-                  <HeartOff className="text-gray-400" size={24} />
-                )*/}
-
-                {/* Botón de editar */}
-                <Link
-                  to={`/medicamentos/${med.id}`}
-                  className="text-blue-600 hover:text-blue-800">
-                <Edit size={18} />
-                </Link>
-              </div>
-            </div>
+              <h2 className="font-semibold text-gray-800">
+                {med.nombre} - {med.presentacion}
+              </h2>
+              <p className="text-sm text-gray-500">
+                Posología: {med.posologiaValor} {med.posologiaUnidad} | 
+                Concentración: {med.concentracionValor} {med.concentracionUnidad}
+              </p>
+              <p className="text-sm text-gray-500">  
+                {med.comentario}
+              </p>
+            </Link>
           ))}
         </div>
 
         {/* Botón flotante para añadir */}
         <Link
           to="/medicamentos/new"
-          className="fixed bottom-20 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-700">
-            <Plus className="w-7 h-7" />
+          className="fixed bottom-20 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-700"
+        >
+          <Plus className="w-7 h-7" />
         </Link>
       </div>
       <BottomNav />

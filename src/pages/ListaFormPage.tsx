@@ -11,8 +11,9 @@ import { listaMedicamentoLocalRepo } from "@/repositories/local/ListaMedicamento
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { Edit } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import ListaNuevaModal from "@/components/ListaNuevaModal";
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
 export default function ListaFormPage() {
   const nav = useNavigate();
@@ -23,7 +24,7 @@ export default function ListaFormPage() {
   const [seleccionados, setSeleccionados] = useState<Set<string>>(new Set());
   const repoListaMedicamento = listaMedicamentoLocalRepo();
   const [showModal, setShowModal] = useState(false);
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [filtro, setFiltro] = useState("");
 
   // Cargar lista y medicamentos del usuario
@@ -69,11 +70,6 @@ export default function ListaFormPage() {
   async function handleGuardar() {
     if (!listaId) return;
 
-    console.log(
-      "Medicamentos seleccionados para lista:",
-      Array.from(seleccionados)
-    );
-
     // 1. Borramos todos los registros actuales de esa lista
     const actuales = await repoListaMedicamento.obtenerPorLista(listaId);
     for (const lm of actuales) {
@@ -89,6 +85,19 @@ export default function ListaFormPage() {
     nav(-1);
   }
 
+  // Eliminar lista completa
+  async function handleEliminarLista() {
+    if (!lista || !listaId) return;
+
+    const repoListas = listasLocalRepo();
+    // 1. Eliminar relaciones de medicamentos
+    await repoListaMedicamento.eliminarPorLista(lista.id);
+    // 2. Eliminar la lista
+    await repoListas.eliminarPorId(lista.id);
+    // 3. Volver a la pantalla anterior
+    nav(-1);
+  }
+
   // Filtro simple
   const medicamentosFiltrados = medicamentos.filter((m) =>
     m.nombre.toLowerCase().includes(filtro.toLowerCase())
@@ -98,20 +107,34 @@ export default function ListaFormPage() {
     <div>
       <TopBar />
       <div className="max-w-2xl mx-auto p-4 pb-24">
-        {/* Título */}
-        <h1 className="text-xl font-bold">
-          <span>
+        {/* Header con título + acciones */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold">
             Medicamentos de lista {lista?.nombre || "Lista sin nombre"}
-          </span>
+          </h1>
+
           {lista && (
-            <button
-              onClick={() => setShowModal(true)}
-              className="p-1 rounded-full hover:bg-gray-100"
-            >
-              <Edit className="w-5 h-5 text-blue-600 hover:text-blue-800" />
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Botón editar */}
+              <button
+                onClick={() => setShowModal(true)}
+                className="p-2 rounded-full hover:bg-gray-100"
+              >
+                <Edit className="w-5 h-5 text-blue-600 hover:text-blue-800" />
+              </button>
+
+              {/* Botón eliminar */}
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                className="p-2 rounded-full hover:bg-gray-100"
+              >
+                <Trash2 className="w-5 h-5 text-red-600 hover:text-red-800" />
+              </button>
+            </div>
           )}
-        </h1>
+        </div>
+
+        {/* Descripción */}
         <p className="text-gray-500">{lista?.descripcion}</p>
 
         {/* Barra de búsqueda */}
@@ -163,6 +186,17 @@ export default function ListaFormPage() {
               setLista(updatedLista);
               setShowModal(false);
             }}
+          />
+        )}
+
+        {/* Modal eliminar lista */}
+        {showDeleteModal && listaId && (
+          <ConfirmDeleteModal
+            isOpen={showDeleteModal}
+            onCancel={() => setShowDeleteModal(false)}
+            onConfirm={handleEliminarLista}
+            title="Eliminar lista"
+            message="¿Estás seguro de eliminar esta lista? Los medicamentos seguirán existiendo, pero se perderá la relación con esta lista."
           />
         )}
       </div>
