@@ -8,6 +8,8 @@ import MedicamentoFormPage from "@/pages/MedicamentoFormPage";
 import MedicamentoPage from "@/pages/MedicamentoPage";
 import ListaPage from "@/pages/ListaPage";
 import ListaFormPage from "@/pages/ListaFormPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import CalculadoraPage from "@/pages/CalculadoraPage";
 import PrivateRoute from "@/components/PrivateRoute";
 
@@ -17,6 +19,8 @@ export default function AppRoutes() {
       <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/debug-auth" element={<DebugAuth />} />
       

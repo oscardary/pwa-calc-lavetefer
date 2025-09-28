@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
-//import Dashboard from "@/pages/DashboardPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
 import MedicamentoFormPage from "@/pages/MedicamentoFormPage";
 import MedicamentoPage from "@/pages/MedicamentoPage";
 import ListaPage from "@/pages/ListaPage";
@@ -17,6 +18,18 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  }, 
+  {
+    path: "/reset-password",
+    element: <ResetPasswordPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
   },
   {
     path: "/medicamentos",
@@ -65,10 +78,6 @@ const router = createBrowserRouter([
         <ListaPage />
       </PrivateRoute>
     ),
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
   },
   {
     path: "/calculadora",

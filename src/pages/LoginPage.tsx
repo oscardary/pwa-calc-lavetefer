@@ -1,7 +1,7 @@
-
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/lib/auth/useAuth';
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/lib/auth/useAuth";
+import InputLabelFloating from "@/components/InputLabelFloating";
 
 export default function LoginPage() {
   const { signIn, user, loading } = useAuth();
@@ -19,7 +19,8 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setBusy(true); setError(null);
+    setBusy(true);
+    setError(null);
     try {
       await signIn(email, password); // si falla, lanza y cae al catch
       // onAuthStateChange actualizará user -> useEffect redirige
@@ -36,22 +37,45 @@ export default function LoginPage() {
         <h1 className="text-xl font-semibold mb-2">Iniciar sesión</h1>
         <p className="text-sm text-gray-600 mb-4">Bienvenido de nuevo</p>
         <form onSubmit={handleSubmit} className="space-y-3">
-          <input className="w-full border rounded-xl px-3 py-2" placeholder="Email" 
-            value={email} 
-            onChange={e=>setEmail(e.target.value)} 
-            required type="email"/>
-          <input className="w-full border rounded-xl px-3 py-2" type="password" placeholder="Contraseña" 
-            value={password} 
-            onChange={e=>setPassword(e.target.value)} 
-            required/>
+          <InputLabelFloating
+            id="Email"
+            type="email"
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <InputLabelFloating
+            id="Password"
+            type="password"
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
           {error && <p className="text-red-500">{error}</p>}
 
-          <button className="w-full rounded-xl py-2 bg-green-600 text-white" type="submit" disabled={busy}>{busy ? "Ingresando..." : "Entrar"}</button>
-
+          <button
+            className="w-full rounded-xl py-2 bg-blue-600 text-white"
+            type="submit"
+            disabled={busy}
+          >
+            {busy ? "Ingresando..." : "Entrar"}
+          </button>
         </form>
-        <p className="text-sm mt-3 text-center">¿No tienes cuenta? <Link to="/register" className="text-green-700">Regístrate</Link></p>
+        <p className="text-sm mt-3 text-center">
+          ¿No tienes cuenta?{" "}
+          <Link to="/register" className="text-blue-600">
+            Regístrate
+          </Link>
+        </p>
+        <p className="text-sm mt-3 text-center">
+          <Link to="/register" className="text-blue-600">
+          Si olvidaste tu contraseña, avisanos.
+          </Link>
+        </p>
       </div>
     </div>
-  )
+  );
 }
