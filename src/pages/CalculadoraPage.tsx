@@ -94,7 +94,7 @@ export default function CalculadoraPage() {
           {medicamentos.map((med) => (
             <div
               key={med.id}
-              className="flex justify-between items-center p-4 rounded-xl shadow-sm bg-white"
+              className="flex border justify-between items-center p-4 rounded-xl shadow-sm bg-white"
             >
               <div>
                 <p className="font-semibold">{med.nombre}</p>

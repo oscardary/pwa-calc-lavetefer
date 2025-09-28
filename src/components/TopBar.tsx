@@ -3,19 +3,23 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from "@/lib/auth/useAuth";
 import { useUser } from "../context/UserContext";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useState } from "react";
+import ConfirmModal from "./ConfirmModal";
 
 export default function TopBar() {
-  //const { user } = useAuth();
   const { user } = useUser();
   const navigate = useNavigate();
   const { signOut } = useAuth();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   async function handleSignOut() {
-    const confirmLogout = window.confirm("¿Deseas cerrar sesión?");
-    if (!confirmLogout) return;
-
     await signOut();
+    setShowLogoutModal(false);
     navigate("/login");
+  }
+
+  function truncate(text: string, max: number) {
+    return text.length > max ? text.slice(0, max) + "..." : text;
   }
 
   return (
@@ -30,7 +34,7 @@ export default function TopBar() {
             <button className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 transition">
               {user ? (
                 <span className="text-sm font-medium text-gray-700">
-                  👋 Hola, <strong>{user.nick}</strong>
+                  👋 Hola, <strong>{truncate(user?.nick || "X", 8)}</strong>
                 </span>
               ) : (
                 <span className="text-sm text-gray-600">Menú</span>
@@ -57,24 +61,6 @@ export default function TopBar() {
 
                 <DropdownMenu.Item asChild>
                   <Link
-                    to="/mis-listas"
-                    className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
-                  >
-                    Mis listas
-                  </Link>
-                </DropdownMenu.Item>
-
-                <DropdownMenu.Item asChild>
-                  <Link
-                    to="/mis-medicamentos"
-                    className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
-                  >
-                    Mis medicamentos
-                  </Link>
-                </DropdownMenu.Item>
-
-                <DropdownMenu.Item asChild>
-                  <Link
                     to="/settings"
                     className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
                   >
@@ -87,7 +73,7 @@ export default function TopBar() {
                 {/* Cerrar sesión */}
                 <DropdownMenu.Item asChild>
                   <button
-                    onClick={handleSignOut}
+                    onClick={() => setShowLogoutModal(true)}
                     className="w-full text-left px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50"
                   >
                     Cerrar sesión
@@ -106,8 +92,19 @@ export default function TopBar() {
             )}
           </DropdownMenu.Content>
         </DropdownMenu.Root>
-
       </div>
+      
+      {/* Modal de confirmación logout */}
+      <ConfirmModal
+        isOpen={showLogoutModal}
+        title="Cerrar sesión"
+        message="¿Estás seguro de que deseas cerrar tu sesión?"
+        confirmText="Cerrar sesión"
+        cancelText="Cancelar"
+        confirmColor="bg-red-600 hover:bg-red-700"
+        onConfirm={handleSignOut}
+        onCancel={() => setShowLogoutModal(false)}
+      />
     </header>
   )
 }
