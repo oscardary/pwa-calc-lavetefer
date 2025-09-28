@@ -78,7 +78,7 @@ export default function MedicamentoFormPage() {
             <InputLabelFloating
               id="valConcentracion"
               type="text"
-              label="Conc. valor"
+              label="Concentración"
               value={med.concentracionValor}
               onChange={(e) =>
                 setMed({ ...med, concentracionValor: e.target.value })
@@ -103,7 +103,7 @@ export default function MedicamentoFormPage() {
             <InputLabelFloating
               id="valPosologia"
               type="text"
-              label="Posología. valor"
+              label="Posología"
               value={med.posologiaValor}
               onChange={(e) =>
                 setMed({ ...med, posologiaValor: e.target.value })
@@ -126,7 +126,7 @@ export default function MedicamentoFormPage() {
           </div>
           <TextareaLabelFloating
             id="comentario"
-            label="Comentario"
+            label="Observaciones"
             value={med.comentario}
             onChange={(e) => setMed({ ...med, comentario: e.target.value })}
             required

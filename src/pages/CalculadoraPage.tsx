@@ -1,7 +1,7 @@
 // src/pages/CalculadoraPage.tsx
 import { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
-import { ListCheck } from "lucide-react";
+import { ListCheck, Info } from "lucide-react";
 import { medicamentosLocalRepo } from "../repositories/local/MedicamentosLocalRepo";
 import { listasLocalRepo } from "../repositories/local/ListasLocalRepo";
 import { listaMedicamentoLocalRepo } from "@/repositories/local/ListaMedicamentoLocalRepo";
@@ -105,6 +105,10 @@ export default function CalculadoraPage() {
                   Concentración: {med.concentracionValor}{" "}
                   {med.concentracionUnidad}
                 </p>
+                <div className="flex items-center gap-2">
+                  <Info className="w-4 h-4 text-blue-600" />
+                  <p className="text-sm text-gray-600">{med.comentario}</p>
+                </div>
               </div>
               <div className="text-right">
                 <p className="text-xs text-gray-500">Dosis</p>

@@ -3,11 +3,10 @@ import { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
 import { medicamentosLocalRepo } from "../repositories/local/MedicamentosLocalRepo";
 import { iMedicamentoId } from "../domain/types/index";
-import { Edit, Plus } from "lucide-react";
+import { Info, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
-
 
 export default function MedicamentosPage() {
   const { user } = useUser();
@@ -63,12 +62,14 @@ export default function MedicamentosPage() {
                 {med.nombre} - {med.presentacion}
               </h2>
               <p className="text-sm text-gray-500">
-                Posología: {med.posologiaValor} {med.posologiaUnidad} | 
-                Concentración: {med.concentracionValor} {med.concentracionUnidad}
+                Posología: {med.posologiaValor} {med.posologiaUnidad} |
+                Concentración: {med.concentracionValor}{" "}
+                {med.concentracionUnidad}
               </p>
-              <p className="text-sm text-gray-500">  
-                {med.comentario}
-              </p>
+              <div className="flex items-center gap-2">
+                <Info className="w-4 h-4 text-blue-600" />
+                <p className="text-sm text-gray-600">{med.comentario}</p>
+              </div>
             </Link>
           ))}
         </div>
