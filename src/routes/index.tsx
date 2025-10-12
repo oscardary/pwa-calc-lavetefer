@@ -12,6 +12,7 @@ import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import CalculadoraPage from "@/pages/CalculadoraPage";
 import PrivateRoute from "@/components/PrivateRoute";
+import InformacionPage from "@/pages/InformacionPage";
 
 export default function AppRoutes() {
   return (
@@ -29,6 +30,7 @@ export default function AppRoutes() {
       <Route path="/mis-listas" element={<PrivateRoute><ListaPage /></PrivateRoute>} />
       <Route path="/listas/:listaId" element={<PrivateRoute><ListaFormPage /></PrivateRoute>} />
       <Route path="/calculadora" element={<PrivateRoute><CalculadoraPage /></PrivateRoute>} />
+      <Route path="/informacion" element={<PrivateRoute><InformacionPage /></PrivateRoute>} />
     </Routes>
   );
 }

@@ -63,15 +63,15 @@ export default function ListaNuevaModal({
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
         />
-        <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 bg-gray-200 rounded">
-            Cancelar
-          </button>
+        <div className="flex justify-center gap-2">
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white rounded"
+            className="rounded-xl bg-blue-600 text-white px-10 py-2 shadow-md hover:bg-blue-800"
           >
             {isEdit ? "Guardar" : "Crear"}
+          </button>
+          <button onClick={onClose} className="rounded-xl border px-10 py-2 shadow-md hover:bg-gray-300">
+            Cancelar
           </button>
         </div>
       </div>

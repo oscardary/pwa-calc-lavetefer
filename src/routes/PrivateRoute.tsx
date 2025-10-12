@@ -9,6 +9,7 @@ import ListaPage from "@/pages/ListaPage";
 import ListaFormPage from "@/pages/ListaFormPage";
 import CalculadoraPage from "@/pages/CalculadoraPage";
 import PrivateRoute from "../components/PrivateRoute";
+import InformacionPage from "@/pages/InformacionPage";
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,14 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  {
+    path: "/informacion",
+    element: (
+      <PrivateRoute>
+        <InformacionPage />
+      </PrivateRoute>
+    ),
+  }
 ]);
 
 export default router;

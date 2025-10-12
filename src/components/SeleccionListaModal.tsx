@@ -20,7 +20,7 @@ export function SeleccionListaModal({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-80 p-4">
-        <h2 className="text-lg font-semibold mb-4">Selecciona una lista</h2>
+        <h2 className="text-lg font-semibold mb-4 text-center">Selecciona una lista</h2>
 
         {listas.length === 0 ? (
           <p className="text-gray-500 text-center">No tienes listas creadas</p>
@@ -41,7 +41,7 @@ export function SeleccionListaModal({
         )}
 
         <button onClick={onClose}
-          className="mt-4 w-full py-2 bg-gray-200 rounded hover:bg-gray-300">
+          className="mt-4 w-full py-2 rounded-xl hover:bg-gray-300 border">
           Cancelar
         </button>
       </div>
