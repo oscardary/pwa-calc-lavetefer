@@ -8,6 +8,7 @@ export default function RegisterPage() {
   const nav = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   return (
     <div className="min-h-screen grid place-items-center">
@@ -17,7 +18,20 @@ export default function RegisterPage() {
           className="space-y-3"
           onSubmit={(e) => {
             e.preventDefault();
-            signUp(email, password).then(() => nav("/"));
+            signUp(email, password)
+              .then(() => {
+                // Mostrar mensaje en lugar de navegar directamente
+                setMessage(
+                  "¡Registro exitoso! Revisa tu correo para confirmar tu cuenta."
+                );
+                // Limpiar campos
+                setEmail("");
+                setPassword("");
+              })
+              .catch((err) => {
+                console.error(err);
+                setMessage("Ocurrió un error al registrarte.");
+              });
           }}
         >
           <InputLabelFloating
