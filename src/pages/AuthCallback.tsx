@@ -26,7 +26,7 @@ export default function AuthCallback() {
         setUser(u); // guardar en contexto
         localStorage.setItem("user", JSON.stringify(u)); // respaldo
         console.log("Usuario autenticado:", session.user);
-        navigate("/dashboard");
+        navigate("/calculadora");
       } else {
         navigate("/login");
       }
