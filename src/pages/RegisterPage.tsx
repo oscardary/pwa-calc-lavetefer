@@ -54,6 +54,12 @@ export default function RegisterPage() {
             Crear cuenta
           </button>
         </form>
+
+        {/* Mensaje de confirmación */}
+        {message && (
+          <p className="text-sm mt-3 text-center text-green-600">{message}</p>
+        )}
+
         <p className="text-sm mt-3 text-center">
           ¿Ya tienes cuenta?{" "}
           <Link to="/" className="text-blue-600">
