@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth/useAuth";
 import InputLabelFloating from "@/components/InputLabelFloating";
 
 export default function LoginPage() {
-  const { signIn, user, loading } = useAuth();
+  const { sendMagicLink, user, loading } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -21,11 +21,17 @@ export default function LoginPage() {
     e.preventDefault();
     setBusy(true);
     setError(null);
+    setMessage(null);
+
     try {
-      await signIn(email, password); // si falla, lanza y cae al catch
-      // onAuthStateChange actualizará user -> useEffect redirige
+      await sendMagicLink(email);
+
+      setMessage(
+        "📩 Revisa tu correo y haz clic en el enlace para acceder."
+      );
+      setEmail("");
     } catch (err: any) {
-      setError(err?.message ?? "Error al iniciar sesión");
+      setError(err?.message ?? "Error enviando el correo");
     } finally {
       setBusy(false);
     }
@@ -34,8 +40,11 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen grid place-items-center">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow p-6">
-        <h1 className="text-xl font-semibold mb-2">Iniciar sesión</h1>
-        <p className="text-sm text-gray-600 mb-4">Bienvenido de nuevo</p>
+        <h1 className="text-xl font-semibold mb-2">Acceder</h1>
+        <p className="text-sm text-gray-600 mb-4">
+          Ingresa tu correo y te enviaremos un enlace
+        </p>
+
         <form onSubmit={handleSubmit} className="space-y-3">
           <InputLabelFloating
             id="Email"
@@ -45,36 +54,18 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <InputLabelFloating
-            id="Password"
-            type="password"
-            label="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
 
           {error && <p className="text-red-500">{error}</p>}
+          {message && <p className="text-green-600">{message}</p>}
 
           <button
             className="w-full rounded-xl py-2 bg-blue-600 text-white"
             type="submit"
             disabled={busy}
           >
-            {busy ? "Ingresando..." : "Entrar"}
+            {busy ? "Enviando..." : "Enviar enlace"}
           </button>
         </form>
-        <p className="text-sm mt-3 text-center">
-          ¿No tienes cuenta?{" "}
-          <Link to="/register" className="text-blue-600">
-            Regístrate
-          </Link>
-        </p>
-        <p className="text-sm mt-3 text-center">
-          <Link to="/register" className="text-blue-600">
-          Si olvidaste tu contraseña, avisanos.
-          </Link>
-        </p>
       </div>
     </div>
   );

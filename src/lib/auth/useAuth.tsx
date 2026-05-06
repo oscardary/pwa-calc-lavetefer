@@ -7,16 +7,14 @@ type User = { id: string; email: string } | null;
 interface AuthContextType {
   user: User;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  sendMagicLink: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
 const AuthCtx = createContext<AuthContextType>({
   user: null,
   loading: true,
-  signIn: async () => {},
-  signUp: async () => {},
+  sendMagicLink: async () => {},
   signOut: async () => {},
 });
 
@@ -30,18 +28,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // 1) Recuperar sesión inicial
     supabase.auth.getSession().then(({ data }) => {
       if (!mounted) return;
+
       setUser(
         data.session?.user
           ? { id: data.session.user.id, email: data.session.user.email! }
           : null
       );
+
       setLoading(false);
     });
 
-    // 2) Escuchar cambios en la sesión (LOGIN / LOGOUT)
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ? { id: session.user.id, email: session.user.email! } : null);
-    });
+    // 2) Escuchar cambios en la sesión
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(
+          session?.user
+            ? { id: session.user.id, email: session.user.email! }
+            : null
+        );
+      }
+    );
 
     return () => {
       mounted = false;
@@ -49,29 +55,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // signIn: lanza error si falla -> usar try/catch en la UI
-  async function signIn(email: string, password: string) {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    // normalmente `onAuthStateChange` actualizará `user`
-    return;
-  }
-
-  // signUp: indicamos emailRedirectTo para que el link apunte a /auth/callback
-  async function signUp(email: string, password: string) {
-    const { data, error } = await supabase.auth.signUp({
+  // 🔑 Enviar Magic Link (login + registro automático)
+  async function sendMagicLink(email: string) {
+    const { error } = await supabase.auth.signInWithOtp({
       email,
-      password,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
+
     if (error) throw error;
-    // el usuario deberá confirmar por email (supabase enviará el correo)
-    return;
   }
 
-  // singOut: Cerrar sesión y dirigir al login
+  // 🚪 Cerrar sesión
   async function signOut() {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -81,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthCtx.Provider value={{ user, loading, signIn, signUp, signOut }}>
+    <AuthCtx.Provider value={{ user, loading, sendMagicLink, signOut }}>
       {children}
     </AuthCtx.Provider>
   );

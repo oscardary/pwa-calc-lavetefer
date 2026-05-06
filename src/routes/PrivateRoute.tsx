@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import LoginPage from "@/pages/LoginPage";
-import RegisterPage from "@/pages/RegisterPage";
-import ResetPasswordPage from "@/pages/ResetPasswordPage";
-import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+//import RegisterPage from "@/pages/RegisterPage";
+//import ResetPasswordPage from "@/pages/ResetPasswordPage";
+//import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
 import MedicamentoFormPage from "@/pages/MedicamentoFormPage";
 import MedicamentoPage from "@/pages/MedicamentoPage";
 import ListaPage from "@/pages/ListaPage";
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     path: "/login",
     element: <LoginPage />,
   },
-  {
+  /*{
     path: "/register",
     element: <RegisterPage />,
   }, 
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
   {
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
-  },
+  },*/
   {
     path: "/medicamentos",
     element: (

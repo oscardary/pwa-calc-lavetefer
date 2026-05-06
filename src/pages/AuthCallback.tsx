@@ -9,6 +9,10 @@ export default function AuthCallback() {
 
   useEffect(() => {
     const handleCallback = async () => {
+
+      // 🔥 Esperar a que Supabase procese el token
+      await new Promise((res) => setTimeout(res, 500));
+
       const { data: { session }, error } = await supabase.auth.getSession();
 
       if (error) {
