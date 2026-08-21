@@ -9,8 +9,6 @@ export interface iMedicamentosRepo {
   insertar(usuarioId: string, medNuevo: iMedicamento): Promise<string>
   actualizar(med: iMedicamentoId): Promise<void>
   eliminarPorId(id: string): Promise<void>
-  asociarAMedicamentoLista(listaId: string, medicamentoId: string): Promise<void>
-  desasociarDeLista(listaId: string, medicamentoId: string): Promise<void>
 }
 
 export function medicamentosLocalRepo(): iMedicamentosRepo {
@@ -64,21 +62,6 @@ export function medicamentosLocalRepo(): iMedicamentosRepo {
     async eliminarPorId(id) {
       const db = await getDB()
       await db.delete(STORE_MEDICAMENTOS, id)
-    },
-    async asociarAMedicamentoLista(listaId: string, medicamentoId: string) {
-      const db = await getDB()
-      await db.add(STORE_LISTA_MEDICAMENTO, {
-        listaId,
-        medicamentoId,
-      })
-    },
-    async desasociarDeLista(listaId: string, medicamentoId: string) {
-      const db = await getDB()
-      const idx = db.transaction(STORE_LISTA_MEDICAMENTO).store.index("lista_medicamento_idx")
-      const key = await idx.getKey([listaId, medicamentoId])
-      if (key) {
-        await db.delete(STORE_LISTA_MEDICAMENTO, key)
-      }
     }
   }
 }

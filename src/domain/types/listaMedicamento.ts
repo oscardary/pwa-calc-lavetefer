@@ -1,3 +1,4 @@
+//src/domain/types/lista.ts
 export interface iListaMedicamento {
     listaId: string;
     medicamentoId: string;

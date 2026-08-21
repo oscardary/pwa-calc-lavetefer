@@ -1,3 +1,4 @@
+//src/domain/types/lista.ts
 export interface iLista {
   nombre: string;
   descripcion: string;

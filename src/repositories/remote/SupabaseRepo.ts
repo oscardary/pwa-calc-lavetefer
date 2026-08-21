@@ -1,4 +1,4 @@
-
+//src/repositories/remote/SupabaseRepo.ts
 import { supabase } from '@/lib/auth/supabaseClient'
 
 // Placeholder: implement remote sync to tables: listas, medicamentos

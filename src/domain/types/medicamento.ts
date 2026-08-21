@@ -1,3 +1,4 @@
+//src/domain/types/medicamento.ts
 export interface iMedicamento {
   nombre: string;
   presentacion: string;

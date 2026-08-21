@@ -1,5 +1,4 @@
 // src/routes/index.tsx
-
 import { Routes, Route } from "react-router-dom";
 import LoginPage from "@/pages/LoginPage";
 import DebugAuth from "@/pages/DebugAuth";
@@ -10,6 +9,7 @@ import ListaFormPage from "@/pages/ListaFormPage";
 import CalculadoraPage from "@/pages/CalculadoraPage";
 import PrivateRoute from "@/components/PrivateRoute";
 import InformacionPage from "@/pages/InformacionPage";
+import SettingsPage from "@/pages/SettingsPage";
 
 export default function AppRoutes() {
   return (
@@ -69,6 +69,15 @@ export default function AppRoutes() {
         element={
           <PrivateRoute>
             <InformacionPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/settings"
+        element={
+          <PrivateRoute>
+            <SettingsPage />
           </PrivateRoute>
         }
       />

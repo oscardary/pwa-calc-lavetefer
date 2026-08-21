@@ -61,6 +61,15 @@ export default function TopBar() {
 
                 <DropdownMenu.Item asChild>
                   <Link
+                    to="/settings"
+                    className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
+                  >
+                    Configuración
+                  </Link>
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Item asChild>
+                  <Link
                     to="/informacion"
                     className="block px-3 py-2 text-sm rounded-md hover:bg-gray-100"
                   >
